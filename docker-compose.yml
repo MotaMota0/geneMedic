@@ -1,28 +1,20 @@
 
 services:
   app:
-    build: .
+    image: taskdelat-app
+    container_name: taskdelat-app
     ports:
       - "8085:8085"
-    depends_on:
-      - db
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/task_manager
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: user
-      JWT_SECRET: verySecretKeyChangeThisToEnvOrVault-VERY_LONG
-      JWT_EXPIRATION: 3600000
+      PGHOST: host.docker.internal
+      PGPORT: 5433
+      PGDATABASE: taskdelat
+      PGUSER: postgres
+      PGPASSWORD: tvoipassword
 
-  db:
-    image: postgres:17
-    environment:
-      POSTGRES_DB: task_manager
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: user
-    ports:
-      - "5433:5432"   # хост:контейнер
-    volumes:
-      - pgdata:/var/lib/postgresql/data
+      SPRING_DATASOURCE_URL: jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}
+      SPRING_DATASOURCE_USERNAME: ${PGUSER}
+      SPRING_DATASOURCE_PASSWORD: ${PGPASSWORD}
 
-volumes:
-  pgdata:
+    restart: always
+
