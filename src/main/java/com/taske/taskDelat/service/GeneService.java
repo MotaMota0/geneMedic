@@ -149,8 +149,6 @@ public class GeneService {
     public StrategyAnalysis getByDiagnosis(String diagnosis, String phenotype){
 
         List<Object[] > repo = newGeneRepository.getByConsistency(diagnosis,phenotype);
-
-
         if(repo.isEmpty()){
             log.info("No diagnosis or phenotype found for diagnosis,phenotype : {}", diagnosis,phenotype);
             return new StrategyAnalysis(false,"Фенотип (" + phenotype + ") не соответствует диагнозу: " + diagnosis);
